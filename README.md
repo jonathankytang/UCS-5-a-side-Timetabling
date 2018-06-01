@@ -7,7 +7,7 @@ These instructions should help you to use the program to build a full match sche
 The program only works if you use the registration form in the correct format. 
 
 ## Installing
-You will require to download 
+You will require to download for main.py to workz
 
 	main.py
 	UCS_Roundel_RGB.gif
