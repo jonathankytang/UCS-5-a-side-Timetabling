@@ -1,4 +1,4 @@
-# UCS Community Action 5-a-side Timetable Builder
+# UCS Community Action 5-a-Side Timetable Builder
 
 ## Getting Started
 These instructions should help you to use the program to build a full match schedule from a registration form.
@@ -8,8 +8,6 @@ The program only works if you use the registration form in the correct format.
 
 ## Installing
 You will require to download 
-
-.. code-block:: python
 
 	main.py
 	UCS_Roundel_RGB.gif
