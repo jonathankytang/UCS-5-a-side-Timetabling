@@ -9,10 +9,6 @@ The program only works if you use the registration form in the correct format.
 ## Project Report
 The full analysis, design, and testing are detailed in the pdf file, [Jonathan Tang NEA.pdf](https://github.com/jonathankytang/UCS-5-a-side-Timetabling/blob/master/Jonathan%20Tang%20NEA.pdf).
 
-### Installing
-You will require to download 
-
-.. code-block:: console
 ## Installing
 You will require to download for main.py to work:
 
