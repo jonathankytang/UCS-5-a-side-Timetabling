@@ -549,72 +549,76 @@ def assigndatestomatches():
         button5 = Button(window3, text="Close", command=window3Close)
         button5.pack()
         window3.mainloop()
-        
-#User Interface - Home Screen
-root=Tk()
-root.title = ("Start & End Dates")
-root.geometry =("500 x 500")
 
-VdayStart = IntVar()
-VmonthStart = IntVar()
-VyearStart = IntVar()
-VdayEnd = IntVar()
-VmonthEnd = IntVar()
-VyearEnd = IntVar()
-VuserfileName = StringVar()
+def main():
+    #User Interface - Home Screen
+    root=Tk()
+    root.title = ("Start & End Dates")
+    root.geometry =("500 x 500")
 
-VdayStart.set(9)
-VmonthStart.set(1)
-VyearStart.set(2017)
-VdayEnd.set(9)
-VmonthEnd.set(2)
-VyearEnd.set(2017)
+    VdayStart = IntVar()
+    VmonthStart = IntVar()
+    VyearStart = IntVar()
+    VdayEnd = IntVar()
+    VmonthEnd = IntVar()
+    VyearEnd = IntVar()
+    VuserfileName = StringVar()
 
-button1 = Button(root, text="Quit Program", command=quitProgram).grid(row=1, column=3)
+    VdayStart.set(9)
+    VmonthStart.set(1)
+    VyearStart.set(2017)
+    VdayEnd.set(9)
+    VmonthEnd.set(2)
+    VyearEnd.set(2017)
 
-logo = PhotoImage(file="UCS_Roundel_RGB.gif")
-img = Label(root, image = logo).grid(row=2, column=1, columnspan=3)
+    button1 = Button(root, text="Quit Program", command=quitProgram).grid(row=1, column=3)
 
-header1 = Label(root, text="University College School Community Action", fg="#660033", font="Arial 30 bold").grid(row=3, column=1, columnspan=3)
-header2 = Label(root, text="5-A-Side Football Competition Fixture List Builder", font="Arial 20 bold").grid(row=4, column=1, columnspan=3)
-blank1 = Label(root, text="").grid(row=5, column=1, columnspan=3)
+    logo = PhotoImage(file="UCS_Roundel_RGB.gif")
+    img = Label(root, image = logo).grid(row=2, column=1, columnspan=3)
 
-introMessage1 = Label(root,text="Welcome!", font="Arial 26").grid(row=6, column=1, columnspan=3)
-introMessage2 = Label(root,text="To create a fixture list, follow the instructions below").grid(row=7, column=1, columnspan=3)
-blank2 = Label(root,text="").grid(row=8, column=1, columnspan=3)
+    header1 = Label(root, text="University College School Community Action", fg="#660033", font="Arial 30 bold").grid(row=3, column=1, columnspan=3)
+    header2 = Label(root, text="5-A-Side Football Competition Fixture List Builder", font="Arial 20 bold").grid(row=4, column=1, columnspan=3)
+    blank1 = Label(root, text="").grid(row=5, column=1, columnspan=3)
 
-dateHeader = Label(root, text="Start & End Dates", font="Arial 18 bold").grid(row=9, column=1, columnspan=3)
-partMessage = Label(root,text="Please enter fill in all the fields below").grid(row=10, column=1, columnspan=3)
+    introMessage1 = Label(root,text="Welcome!", font="Arial 26").grid(row=6, column=1, columnspan=3)
+    introMessage2 = Label(root,text="To create a fixture list, follow the instructions below").grid(row=7, column=1, columnspan=3)
+    blank2 = Label(root,text="").grid(row=8, column=1, columnspan=3)
 
-startLabel = Label(root,text="START DATE").grid(row=11, column=1, columnspan=3)
-daystartLabel = Label(root, text= "Enter start day: ").grid(row=12, column=1)
-monthstartLabel = Label(root, text= "Enter start month:").grid(row=12, column=2)
-yearstartLabel = Label(root, text="Enter start year:").grid(row=12, column=3)
-daystartTb = OptionMenu(root,VdayStart,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,
-                    16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31).grid(row=13, column=1)
-monthstartTb = OptionMenu(root, VmonthStart,1,2,3,4,5,6,7,8,9,10,11,12).grid(row=13, column=2)
-yearstartTb = OptionMenu(root, VyearStart,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,
-                     2026,2027,2028,2029,2030,2031,2032,2033,2034,2035,2036,2037,2038,2039,2040,
-                     2041,2042,2043,2044,2045,2046,2047,2048,2049,2050).grid(row=13, column=3)
+    dateHeader = Label(root, text="Start & End Dates", font="Arial 18 bold").grid(row=9, column=1, columnspan=3)
+    partMessage = Label(root,text="Please enter fill in all the fields below").grid(row=10, column=1, columnspan=3)
 
-endLabel = Label(root,text="END DATE").grid(row=14, column=1, columnspan=3)
-dayendLabel = Label(root, text= "Enter end day: ").grid(row=15, column=1)
-monthendLabel = Label(root, text= "Enter end month:").grid(row=15, column=2)
-yearendLabel = Label(root, text="Enter end year:").grid(row=15, column=3)
-dayendTb = OptionMenu(root, VdayEnd,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,
-                    16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31).grid(row=16, column=1)
-monthendTb = OptionMenu(root, VmonthEnd,1,2,3,4,5,6,7,8,9,10,11,12).grid(row=16, column=2)
-yearendTb = OptionMenu(root, VyearEnd,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,
-                     2026,2027,2028,2029,2030,2031,2032,2033,2034,2035,2036,2037,2038,2039,2040,
-                     2041,2042,2043,2044,2045,2046,2047,2048,2049,2050).grid(row=16, column=3)
-blank3 = Label(root,text="").grid(row=17, column=1)
+    startLabel = Label(root,text="START DATE").grid(row=11, column=1, columnspan=3)
+    daystartLabel = Label(root, text= "Enter start day: ").grid(row=12, column=1)
+    monthstartLabel = Label(root, text= "Enter start month:").grid(row=12, column=2)
+    yearstartLabel = Label(root, text="Enter start year:").grid(row=12, column=3)
+    daystartTb = OptionMenu(root,VdayStart,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,
+                        16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31).grid(row=13, column=1)
+    monthstartTb = OptionMenu(root, VmonthStart,1,2,3,4,5,6,7,8,9,10,11,12).grid(row=13, column=2)
+    yearstartTb = OptionMenu(root, VyearStart,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,
+                         2026,2027,2028,2029,2030,2031,2032,2033,2034,2035,2036,2037,2038,2039,2040,
+                         2041,2042,2043,2044,2045,2046,2047,2048,2049,2050).grid(row=13, column=3)
 
-userfilenameHeader = Label(root, text="New File Name", font="Arial 18 bold").grid(row=18, column=1, columnspan=3)
-userfilenameLabel = Label(root, text="Enter the file name of your fixture list").grid(row=19, column=1, columnspan=2)
-userfilenameTb = Entry(root, textvariable=VuserfileName, justify="left").grid(row=19, column=3)
-blank4 = Label(root, text="").grid(row=20, column=1)
+    endLabel = Label(root,text="END DATE").grid(row=14, column=1, columnspan=3)
+    dayendLabel = Label(root, text= "Enter end day: ").grid(row=15, column=1)
+    monthendLabel = Label(root, text= "Enter end month:").grid(row=15, column=2)
+    yearendLabel = Label(root, text="Enter end year:").grid(row=15, column=3)
+    dayendTb = OptionMenu(root, VdayEnd,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,
+                        16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31).grid(row=16, column=1)
+    monthendTb = OptionMenu(root, VmonthEnd,1,2,3,4,5,6,7,8,9,10,11,12).grid(row=16, column=2)
+    yearendTb = OptionMenu(root, VyearEnd,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,
+                         2026,2027,2028,2029,2030,2031,2032,2033,2034,2035,2036,2037,2038,2039,2040,
+                         2041,2042,2043,2044,2045,2046,2047,2048,2049,2050).grid(row=16, column=3)
+    blank3 = Label(root,text="").grid(row=17, column=1)
 
-button2Header = Label(root,text="Click next to import spreadsheet", font="Arial 18 bold").grid(row=21, column=1, columnspan=3)
-button2 = Button(root, text ="Next", command=assigndatestomatches).grid(row=22, column=1, columnspan=3)
+    userfilenameHeader = Label(root, text="New File Name", font="Arial 18 bold").grid(row=18, column=1, columnspan=3)
+    userfilenameLabel = Label(root, text="Enter the file name of your fixture list").grid(row=19, column=1, columnspan=2)
+    userfilenameTb = Entry(root, textvariable=VuserfileName, justify="left").grid(row=19, column=3)
+    blank4 = Label(root, text="").grid(row=20, column=1)
 
-root.mainloop()
+    button2Header = Label(root,text="Click next to import spreadsheet", font="Arial 18 bold").grid(row=21, column=1, columnspan=3)
+    button2 = Button(root, text ="Next", command=assigndatestomatches).grid(row=22, column=1, columnspan=3)
+
+    root.mainloop()
+
+if __name__=="__main__":
+    main()
