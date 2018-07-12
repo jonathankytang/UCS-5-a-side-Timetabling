@@ -1,4 +1,4 @@
-# UCS Community Action 5-a-Side Timetable Builder
+# UCS Community Action 5-a-Side Football Timetable Builder
 
 ## Getting Started
 These instructions should help you to use the program to build a full match schedule from a registration form.

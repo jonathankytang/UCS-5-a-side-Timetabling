@@ -25,7 +25,7 @@ class DayofWeekPriority:
         self.yeargroup = yeargroup
         self.dayofweek = dayofweek
         self.priority = priority
-        
+
     def __cmp__ (self, other):
         return cmp(self.priority, other.priority)
 
@@ -59,7 +59,6 @@ def assigndatestomatches():
     userfileName = VuserfileName.get()
     while userfileName != "":
         #retrieves inputted data from user interface
-        import datetime
         dayStart = int(VdayStart.get())
         monthStart = int(VmonthStart.get())
         yearStart = int(VyearStart.get())
@@ -69,7 +68,7 @@ def assigndatestomatches():
         userfileName = VuserfileName.get()
 
         #GROUP STAGE MATCHES
-        
+
         #Group stage structure
         lsA = ["E1", "E2", "E3", "E4"]
         lsB = ["S1", "S2", "S3", "S4"]
@@ -93,7 +92,7 @@ def assigndatestomatches():
         mxA = list(itertools.combinations(mxA, 2))
 
         #re-ordering group fixtures
-        lsA = [lsA[0]] + [lsA[5]] + [lsA[1]] + [lsA[4]] + [lsA[2]] + [lsA[3]] 
+        lsA = [lsA[0]] + [lsA[5]] + [lsA[1]] + [lsA[4]] + [lsA[2]] + [lsA[3]]
         lsB = [lsB[0]] + [lsB[5]] + [lsB[1]] + [lsB[4]] + [lsB[2]] + [lsB[3]]
         msA = [msA[0]] + [msA[5]] + [msA[1]] + [msA[4]] + [msA[2]] + [msA[3]]
         msB = [msB[0]] + [msB[5]] + [msB[1]] + [msB[4]] + [msB[2]] + [msB[3]]
@@ -102,9 +101,9 @@ def assigndatestomatches():
         usC = [usC[0]] + [usC[5]] + [usC[1]] + [usC[4]] + [usC[2]] + [usC[3]]
         usD = [usD[0]] + [usD[5]] + [usD[1]] + [usD[4]] + [usD[2]] + [usD[3]]
         mxA = [mxA[0]] + [mxA[5]] + [mxA[1]] + [mxA[4]] + [mxA[2]] + [mxA[3]]
-                
+
         matchList = lsA + lsB + msA + msB + usA + usB + usC + usD + mxA
-            
+
         #converting tuples to lists
         for counter1 in range(len(matchList)):
             list3 = list(matchList[counter1])
@@ -113,7 +112,7 @@ def assigndatestomatches():
         #assigning match numbers to gs matches
         groupCode = ["LS","MS","US","MX"]
         groupCount = [12,12,24,6]
-            
+
         match = 0
         for group in range(4):
             for count in range(groupCount[group]):
@@ -136,13 +135,13 @@ def assigndatestomatches():
             numberDay = 13
         elif startDate.isoweekday() == 5:
             numberDay = 14
-            
+
         gsEndDate = startDate + datetime.timedelta(days=numberDay)
-        
+
         koStartDate = gsEndDate + datetime.timedelta(days=(8-gsEndDate.isoweekday()))
-     
+
         delta = endDate-startDate
-      
+
         gsdelta = gsEndDate - startDate
 
         #stores dates into list, adds weekday and match counters for group stages
@@ -151,7 +150,7 @@ def assigndatestomatches():
             newDate = startDate + td(days=i)
             if newDate.isoweekday()<6:
                 datesList+=[[newDate.year, newDate.month, newDate.day, newDate.isoweekday(),[0,0,0,0,0,0,0,0],[0,0,0,0]]]
-                
+
         #priorities for each year group
         priorityGS = []
 
@@ -213,7 +212,7 @@ def assigndatestomatches():
                         counter += 1
                 if dateFound == False:
                     priNum += 1
-                    
+
         #assigns each GS match a pitch
         matchCounter = 0
         for counter in range(len(matchList)):
@@ -282,7 +281,7 @@ def assigndatestomatches():
 
         #adds on KO dates to KO matches
         numDays = 9
-        
+
         kodatesList = []
         koEndDate = koStartDate + datetime.timedelta(days=numDays)
         kodelta = koEndDate - koStartDate
@@ -291,7 +290,7 @@ def assigndatestomatches():
             newDate = koStartDate + td(days = i)
             if newDate.isoweekday()<6:
                 kodatesList += [[newDate.year, newDate.month, newDate.day, newDate.isoweekday(),[0,0,0,0,0,0,0,0],[0,0,0,0]]]
-                
+
         for match in komatchList:
             priNum = 1
             dateFound = False
@@ -335,7 +334,7 @@ def assigndatestomatches():
                             datesFound += 1
                         counter += 1
                 while counter < len(kodatesList) and dateFound == False:
-                    if (kodatesList[counter][3] == bestDay or match[2] == "US29" or match[2] == "US30") and kodatesList[counter][5][competition] < 2 and sum(kodatesList[counter][5]) < 6: 
+                    if (kodatesList[counter][3] == bestDay or match[2] == "US29" or match[2] == "US30") and kodatesList[counter][5][competition] < 2 and sum(kodatesList[counter][5]) < 6:
                         match.append(kodatesList[counter])
                         kodatesList[counter][5][competition] += 1
                         dateFound = True
@@ -362,7 +361,7 @@ def assigndatestomatches():
         #assigning pitches and session times to KO matches
         prevDate=[]
         for match in komatchList:
-            if match[3]!=prevDate:
+            if match[3]!= prevDate:
                 pitch = 1
             else:
                 pitch += 1
@@ -370,7 +369,7 @@ def assigndatestomatches():
             match.append("Centre")
             match.append(pitch)
             prevDate = match[3]
-                    
+
         matchList += komatchList
         kodatesList += [finalDateConv]
         datesList += kodatesList
@@ -383,7 +382,7 @@ def assigndatestomatches():
         while importSpreadsheet[-4:]==".csv":
             with open(importSpreadsheet) as csvfile:
                 readCSV = csv.reader(csvfile, delimiter=",")
-                
+
                 importedE = []
                 importedS = []
                 importedL = []
@@ -397,24 +396,24 @@ def assigndatestomatches():
                     if row[3]=="Lower School (Entry, Shell)":
                         if row[4]=="Entry":
                             importedE.append(row[5])
-                            
+
                         if row[4]=="Shell":
                             importedS.append(row[5])
-                                          
+
                     if row[3]=="Middle School (Lower Remove, Remove)":
                         if row[4]=="Lower Remove":
                             importedL.append(row[5])
-                            
+
                         if row[4]=="Remove":
                             importedR.append(row[5])
-                           
+
                     if row[3]=="Upper School (Upper Remove, Transitus, Sixth, BOYS only)":
                         if row[4]=="Upper Remove":
                             importedU.append(row[5])
-                            
+
                         if row[4]=="Transitus":
                             importedT.append(row[5])
-                            
+
                         if row[4]=="Sixth":
                             imported6.append(row[5])
 
@@ -430,7 +429,7 @@ def assigndatestomatches():
                 random.shuffle(importedT)
                 random.shuffle(imported6)
                 random.shuffle(importedM)
-    
+
             #re-order matches
             finalmatchList = []
             counter = 0
@@ -449,10 +448,10 @@ def assigndatestomatches():
 
                 #assigning pitches and sessions to komatches
                 if len(team1)==2:
-                    
+
                     yr = team1[0]
                     nm = int(team1[1])
-                    
+
                     if yr=="E":
                         team1 = importedE[nm-1]
                     elif yr=="S":
@@ -469,10 +468,10 @@ def assigndatestomatches():
                         team1 = imported6[nm-1]
                     elif yr=="M":
                         team1 = importedM[nm-1]
-                        
+
                     yr = team2[0]
                     nm = int(team2[1])
-                    
+
                     if yr=="E":
                         team2 = importedE[nm-1]
                     elif yr=="S":
@@ -550,75 +549,71 @@ def assigndatestomatches():
         button5.pack()
         window3.mainloop()
 
-def main():
-    #User Interface - Home Screen
-    root=Tk()
-    root.title = ("Start & End Dates")
-    root.geometry =("500 x 500")
+#User Interface - Home Screen
+root=Tk()
+root.title = ("Start & End Dates")
+root.geometry =("500 x 500")
 
-    VdayStart = IntVar()
-    VmonthStart = IntVar()
-    VyearStart = IntVar()
-    VdayEnd = IntVar()
-    VmonthEnd = IntVar()
-    VyearEnd = IntVar()
-    VuserfileName = StringVar()
+VdayStart = IntVar()
+VmonthStart = IntVar()
+VyearStart = IntVar()
+VdayEnd = IntVar()
+VmonthEnd = IntVar()
+VyearEnd = IntVar()
+VuserfileName = StringVar()
 
-    VdayStart.set(9)
-    VmonthStart.set(1)
-    VyearStart.set(2017)
-    VdayEnd.set(9)
-    VmonthEnd.set(2)
-    VyearEnd.set(2017)
+VdayStart.set(9)
+VmonthStart.set(1)
+VyearStart.set(2017)
+VdayEnd.set(9)
+VmonthEnd.set(2)
+VyearEnd.set(2017)
 
-    button1 = Button(root, text="Quit Program", command=quitProgram).grid(row=1, column=3)
+button1 = Button(root, text="Quit Program", command=quitProgram).grid(row=1, column=3)
 
-    logo = PhotoImage(file="UCS_Roundel_RGB.gif")
-    img = Label(root, image = logo).grid(row=2, column=1, columnspan=3)
+logo = PhotoImage(file="UCS_Roundel_RGB.gif")
+img = Label(root, image = logo).grid(row=2, column=1, columnspan=3)
 
-    header1 = Label(root, text="University College School Community Action", fg="#660033", font="Arial 30 bold").grid(row=3, column=1, columnspan=3)
-    header2 = Label(root, text="5-A-Side Football Competition Fixture List Builder", font="Arial 20 bold").grid(row=4, column=1, columnspan=3)
-    blank1 = Label(root, text="").grid(row=5, column=1, columnspan=3)
+header1 = Label(root, text="University College School Community Action", fg="#660033", font="Arial 30 bold").grid(row=3, column=1, columnspan=3)
+header2 = Label(root, text="5-A-Side Football Competition Fixture List Builder", font="Arial 20 bold").grid(row=4, column=1, columnspan=3)
+blank1 = Label(root, text="").grid(row=5, column=1, columnspan=3)
 
-    introMessage1 = Label(root,text="Welcome!", font="Arial 26").grid(row=6, column=1, columnspan=3)
-    introMessage2 = Label(root,text="To create a fixture list, follow the instructions below").grid(row=7, column=1, columnspan=3)
-    blank2 = Label(root,text="").grid(row=8, column=1, columnspan=3)
+introMessage1 = Label(root,text="Welcome!", font="Arial 26").grid(row=6, column=1, columnspan=3)
+introMessage2 = Label(root,text="To create a fixture list, follow the instructions below").grid(row=7, column=1, columnspan=3)
+blank2 = Label(root,text="").grid(row=8, column=1, columnspan=3)
 
-    dateHeader = Label(root, text="Start & End Dates", font="Arial 18 bold").grid(row=9, column=1, columnspan=3)
-    partMessage = Label(root,text="Please enter fill in all the fields below").grid(row=10, column=1, columnspan=3)
+dateHeader = Label(root, text="Start & End Dates", font="Arial 18 bold").grid(row=9, column=1, columnspan=3)
+partMessage = Label(root,text="Please enter fill in all the fields below").grid(row=10, column=1, columnspan=3)
 
-    startLabel = Label(root,text="START DATE").grid(row=11, column=1, columnspan=3)
-    daystartLabel = Label(root, text= "Enter start day: ").grid(row=12, column=1)
-    monthstartLabel = Label(root, text= "Enter start month:").grid(row=12, column=2)
-    yearstartLabel = Label(root, text="Enter start year:").grid(row=12, column=3)
-    daystartTb = OptionMenu(root,VdayStart,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,
-                        16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31).grid(row=13, column=1)
-    monthstartTb = OptionMenu(root, VmonthStart,1,2,3,4,5,6,7,8,9,10,11,12).grid(row=13, column=2)
-    yearstartTb = OptionMenu(root, VyearStart,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,
-                         2026,2027,2028,2029,2030,2031,2032,2033,2034,2035,2036,2037,2038,2039,2040,
-                         2041,2042,2043,2044,2045,2046,2047,2048,2049,2050).grid(row=13, column=3)
+startLabel = Label(root,text="START DATE").grid(row=11, column=1, columnspan=3)
+daystartLabel = Label(root, text= "Enter start day: ").grid(row=12, column=1)
+monthstartLabel = Label(root, text= "Enter start month:").grid(row=12, column=2)
+yearstartLabel = Label(root, text="Enter start year:").grid(row=12, column=3)
+daystartTb = OptionMenu(root,VdayStart,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,
+                    16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31).grid(row=13, column=1)
+monthstartTb = OptionMenu(root, VmonthStart,1,2,3,4,5,6,7,8,9,10,11,12).grid(row=13, column=2)
+yearstartTb = OptionMenu(root, VyearStart,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,
+                     2026,2027,2028,2029,2030,2031,2032,2033,2034,2035,2036,2037,2038,2039,2040,
+                     2041,2042,2043,2044,2045,2046,2047,2048,2049,2050).grid(row=13, column=3)
 
-    endLabel = Label(root,text="END DATE").grid(row=14, column=1, columnspan=3)
-    dayendLabel = Label(root, text= "Enter end day: ").grid(row=15, column=1)
-    monthendLabel = Label(root, text= "Enter end month:").grid(row=15, column=2)
-    yearendLabel = Label(root, text="Enter end year:").grid(row=15, column=3)
-    dayendTb = OptionMenu(root, VdayEnd,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,
-                        16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31).grid(row=16, column=1)
-    monthendTb = OptionMenu(root, VmonthEnd,1,2,3,4,5,6,7,8,9,10,11,12).grid(row=16, column=2)
-    yearendTb = OptionMenu(root, VyearEnd,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,
-                         2026,2027,2028,2029,2030,2031,2032,2033,2034,2035,2036,2037,2038,2039,2040,
-                         2041,2042,2043,2044,2045,2046,2047,2048,2049,2050).grid(row=16, column=3)
-    blank3 = Label(root,text="").grid(row=17, column=1)
+endLabel = Label(root,text="END DATE").grid(row=14, column=1, columnspan=3)
+dayendLabel = Label(root, text= "Enter end day: ").grid(row=15, column=1)
+monthendLabel = Label(root, text= "Enter end month:").grid(row=15, column=2)
+yearendLabel = Label(root, text="Enter end year:").grid(row=15, column=3)
+dayendTb = OptionMenu(root, VdayEnd,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,
+                    16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31).grid(row=16, column=1)
+monthendTb = OptionMenu(root, VmonthEnd,1,2,3,4,5,6,7,8,9,10,11,12).grid(row=16, column=2)
+yearendTb = OptionMenu(root, VyearEnd,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,
+                     2026,2027,2028,2029,2030,2031,2032,2033,2034,2035,2036,2037,2038,2039,2040,
+                     2041,2042,2043,2044,2045,2046,2047,2048,2049,2050).grid(row=16, column=3)
+blank3 = Label(root,text="").grid(row=17, column=1)
 
-    userfilenameHeader = Label(root, text="New File Name", font="Arial 18 bold").grid(row=18, column=1, columnspan=3)
-    userfilenameLabel = Label(root, text="Enter the file name of your fixture list").grid(row=19, column=1, columnspan=2)
-    userfilenameTb = Entry(root, textvariable=VuserfileName, justify="left").grid(row=19, column=3)
-    blank4 = Label(root, text="").grid(row=20, column=1)
+userfilenameHeader = Label(root, text="New File Name", font="Arial 18 bold").grid(row=18, column=1, columnspan=3)
+userfilenameLabel = Label(root, text="Enter the file name of your fixture list").grid(row=19, column=1, columnspan=2)
+userfilenameTb = Entry(root, textvariable=VuserfileName, justify="left").grid(row=19, column=3)
+blank4 = Label(root, text="").grid(row=20, column=1)
 
-    button2Header = Label(root,text="Click next to import spreadsheet", font="Arial 18 bold").grid(row=21, column=1, columnspan=3)
-    button2 = Button(root, text ="Next", command=assigndatestomatches).grid(row=22, column=1, columnspan=3)
+button2Header = Label(root,text="Click next to import spreadsheet", font="Arial 18 bold").grid(row=21, column=1, columnspan=3)
+button2 = Button(root, text ="Next", command=assigndatestomatches).grid(row=22, column=1, columnspan=3)
 
-    root.mainloop()
-
-if __name__=="__main__":
-    main()
+root.mainloop()
