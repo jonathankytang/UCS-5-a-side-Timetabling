@@ -6,7 +6,7 @@
 
 import itertools
 import datetime
-from datetime import date, timedelta as td
+# from datetime import date, timedelta as td
 import queue as Q
 from operator import itemgetter
 from itertools import cycle
@@ -147,56 +147,52 @@ def assigndatestomatches():
         #stores dates into list, adds weekday and match counters for group stages
         datesList = []
         for i in range(gsdelta.days+1):
-            newDate = startDate + td(days=i)
+            newDate = startDate + datetime.timedelta(days=i)
             if newDate.isoweekday()<6:
                 datesList+=[[newDate.year, newDate.month, newDate.day, newDate.isoweekday(),[0,0,0,0,0,0,0,0],[0,0,0,0]]]
 
         #priorities for each year group
         priorityGS = []
 
-        priorityGS.append(DayofWeekPriority("E", 3, 1))
-        priorityGS.append(DayofWeekPriority("E", 5, 2))
-        priorityGS.append(DayofWeekPriority("E", 2, 3))
-        priorityGS.append(DayofWeekPriority("S", 5, 1))
-        priorityGS.append(DayofWeekPriority("S", 4, 2))
-        priorityGS.append(DayofWeekPriority("S", 1, 3))
-        priorityGS.append(DayofWeekPriority("S", 2, 4))
-        priorityGS.append(DayofWeekPriority("L", 3, 1))
-        priorityGS.append(DayofWeekPriority("L", 5, 2))
-        priorityGS.append(DayofWeekPriority("L", 1, 3))
-        priorityGS.append(DayofWeekPriority("L", 2, 4))
-        priorityGS.append(DayofWeekPriority("R", 3, 1))
-        priorityGS.append(DayofWeekPriority("R", 5, 2))
-        priorityGS.append(DayofWeekPriority("R", 4, 3))
-        priorityGS.append(DayofWeekPriority("R", 1, 4))
-        priorityGS.append(DayofWeekPriority("U", 5, 1))
-        priorityGS.append(DayofWeekPriority("U", 4, 2))
-        priorityGS.append(DayofWeekPriority("U", 2, 3))
-        priorityGS.append(DayofWeekPriority("T", 1, 1))
-        priorityGS.append(DayofWeekPriority("T", 4, 2))
-        priorityGS.append(DayofWeekPriority("T", 2, 3))
-        priorityGS.append(DayofWeekPriority("6", 1, 1))
-        priorityGS.append(DayofWeekPriority("6", 4, 2))
-        priorityGS.append(DayofWeekPriority("6", 2, 3))
-        priorityGS.append(DayofWeekPriority("M", 1, 1))
-        priorityGS.append(DayofWeekPriority("M", 4, 2))
-        priorityGS.append(DayofWeekPriority("M", 2, 3))
+        yearGroupCodes = ["E", "S", "L", "R", "U", "T", "6", "M"]
+        priorityVals = {
+            "E": [3,5,2],
+            "S": [5,4,1,2],
+            "L": [3,5,1,2],
+            "R": [3,5,4,1],
+            "U": [5,4,2],
+            "T": [1,4,2],
+            "6": [1,4,2],
+            "M": [1,4,2]
+        }
+
+        for key, value in priorityVals.items():
+            for i in range(len(priorityVals[key])):
+                priorityGS.append(DayofWeekPriority(key, value[i], i+1))
 
         #converts Year Groups to Numbers
-        yearNum = {"E": 0, "S": 1, "L": 2, "R": 3, "U": 4, "T": 5, "6": 6, "M": 7}
-        yearGroupCodes = ["E", "S", "L", "R", "U", "T", "6", "M"]
+        yearNum = {
+            "E": 0, 
+            "S": 1, 
+            "L": 2, 
+            "R": 3, 
+            "U": 4, 
+            "T": 5, 
+            "6": 6, 
+            "M": 7}
 
         #add dates to GS matches
         for match in matchList:
             priNum = 1
             dateFound = False
-            yearGroup = yearNum[match[0][0]]
+            yearGroupcode = match[0][0]
+            yearGroup = yearNum[yearGroupcode]
             while dateFound == False:
                 dayFound = False
                 count = 0
                 while dayFound == False:
                     pri = priorityGS[count]
-                    if pri.yeargroup == match[0][0] and pri.priority == priNum:
+                    if pri.yeargroup == yearGroupcode and pri.priority == priNum:
                         bestDay = pri.dayofweek
                         dayFound = True
                     else:
@@ -252,22 +248,20 @@ def assigndatestomatches():
         #priorities for each competition
         priorityKO = []
 
-        priorityKO.append(DayofWeekPriority("LS", 5, 1))
-        priorityKO.append(DayofWeekPriority("LS", 2, 2))
-        priorityKO.append(DayofWeekPriority("LS", 2, 3))
-        priorityKO.append(DayofWeekPriority("MS", 3, 1))
-        priorityKO.append(DayofWeekPriority("MS", 5, 2))
-        priorityKO.append(DayofWeekPriority("MS", 1, 3))
-        priorityKO.append(DayofWeekPriority("US", 4, 1))
-        priorityKO.append(DayofWeekPriority("US", 2, 2))
-        priorityKO.append(DayofWeekPriority("US", 2, 3))
-        priorityKO.append(DayofWeekPriority("MX", 4, 1))
-        priorityKO.append(DayofWeekPriority("MX", 2, 2))
-        priorityKO.append(DayofWeekPriority("MX", 2, 3))
+        priorityKOnums = {
+            "LS": [5,2,2],
+            "MS": [3,5,1],
+            "US": [4,2,2],
+            "MX": [4,2,2]
+        }
+
+        for key, value in priorityKOnums.items():
+            for i in range(len(priorityKOnums[key])):
+                priorityKO.append(DayofWeekPriority(key, value[i], i+1))
 
         #data dictionary
         compNum = {"LS": 0, "MS": 1, "US": 2, "MX": 3}
-        compCodes = ["LS", "MS", "US", "MX"]
+        # compCodes = ["LS", "MS", "US", "MX"]
 
         #adds all the KO fixtures to matchList
         komatchList = []
@@ -287,7 +281,7 @@ def assigndatestomatches():
         kodelta = koEndDate - koStartDate
 
         for i in range (kodelta.days + 1):
-            newDate = koStartDate + td(days = i)
+            newDate = koStartDate + datetime.timedelta(days = i)
             if newDate.isoweekday()<6:
                 kodatesList += [[newDate.year, newDate.month, newDate.day, newDate.isoweekday(),[0,0,0,0,0,0,0,0],[0,0,0,0]]]
 
@@ -438,8 +432,8 @@ def assigndatestomatches():
                 month = matchList[counter][3][1]
                 day = matchList[counter][3][2]
                 date = str(year) +"/"+str(month)+"/"+str(day)
-                from datetime import datetime
-                date_object = datetime.strptime(date, "%Y/%m/%d")
+                # from datetime import datetime
+                date_object = datetime.datetime.strptime(date, "%Y/%m/%d")
                 convertedDate = date_object.strftime("%a-%d-%b")
                 weekday = matchList[counter][3][3]
                 matchNo = matchList[counter][2]
@@ -495,7 +489,7 @@ def assigndatestomatches():
                 counter += 1
 
             #sorts finalmatchList in chronological order
-            finalmatchList = sorted(finalmatchList, key = lambda row: datetime.strptime(row[0], "%a-%d-%b"))
+            finalmatchList = sorted(finalmatchList, key = lambda row: datetime.datetime.strptime(row[0], "%a-%d-%b"))
 
             #delete matchlist, & add column headings
             del matchList
@@ -549,71 +543,76 @@ def assigndatestomatches():
         button5.pack()
         window3.mainloop()
 
-#User Interface - Home Screen
-root=Tk()
-root.title = ("Start & End Dates")
-root.geometry =("500 x 500")
+if __name__ == '__main__':
 
-VdayStart = IntVar()
-VmonthStart = IntVar()
-VyearStart = IntVar()
-VdayEnd = IntVar()
-VmonthEnd = IntVar()
-VyearEnd = IntVar()
-VuserfileName = StringVar()
+    #User Interface - Home Screen
+    root=Tk()
+    root.title = ("Start & End Dates")
+    root.geometry =("500 x 500")
 
-VdayStart.set(9)
-VmonthStart.set(1)
-VyearStart.set(2017)
-VdayEnd.set(9)
-VmonthEnd.set(2)
-VyearEnd.set(2017)
+    VdayStart = IntVar()
+    VmonthStart = IntVar()
+    VyearStart = IntVar()
+    VdayEnd = IntVar()
+    VmonthEnd = IntVar()
+    VyearEnd = IntVar()
+    VuserfileName = StringVar()
 
-button1 = Button(root, text="Quit Program", command=quitProgram).grid(row=1, column=3)
+    VdayStart.set(9)
+    VmonthStart.set(1)
+    VyearStart.set(2017)
+    VdayEnd.set(9)
+    VmonthEnd.set(2)
+    VyearEnd.set(2017)
+    VuserfileName.set("test.csv")
 
-logo = PhotoImage(file="UCS_Roundel_RGB.gif")
-img = Label(root, image = logo).grid(row=2, column=1, columnspan=3)
+    # assigndatestomatches()
 
-header1 = Label(root, text="University College School Community Action", fg="#660033", font="Arial 30 bold").grid(row=3, column=1, columnspan=3)
-header2 = Label(root, text="5-A-Side Football Competition Fixture List Builder", font="Arial 20 bold").grid(row=4, column=1, columnspan=3)
-blank1 = Label(root, text="").grid(row=5, column=1, columnspan=3)
+    button1 = Button(root, text="Quit Program", command=quitProgram).grid(row=1, column=3)
 
-introMessage1 = Label(root,text="Welcome!", font="Arial 26").grid(row=6, column=1, columnspan=3)
-introMessage2 = Label(root,text="To create a fixture list, follow the instructions below").grid(row=7, column=1, columnspan=3)
-blank2 = Label(root,text="").grid(row=8, column=1, columnspan=3)
+    logo = PhotoImage(file="UCS_Roundel_RGB.gif")
+    img = Label(root, image = logo).grid(row=2, column=1, columnspan=3)
 
-dateHeader = Label(root, text="Start & End Dates", font="Arial 18 bold").grid(row=9, column=1, columnspan=3)
-partMessage = Label(root,text="Please enter fill in all the fields below").grid(row=10, column=1, columnspan=3)
+    header1 = Label(root, text="University College School Community Action", fg="#660033", font="Arial 30 bold").grid(row=3, column=1, columnspan=3)
+    header2 = Label(root, text="5-A-Side Football Competition Fixture List Builder", font="Arial 20 bold").grid(row=4, column=1, columnspan=3)
+    blank1 = Label(root, text="").grid(row=5, column=1, columnspan=3)
 
-startLabel = Label(root,text="START DATE").grid(row=11, column=1, columnspan=3)
-daystartLabel = Label(root, text= "Enter start day: ").grid(row=12, column=1)
-monthstartLabel = Label(root, text= "Enter start month:").grid(row=12, column=2)
-yearstartLabel = Label(root, text="Enter start year:").grid(row=12, column=3)
-daystartTb = OptionMenu(root,VdayStart,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,
-                    16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31).grid(row=13, column=1)
-monthstartTb = OptionMenu(root, VmonthStart,1,2,3,4,5,6,7,8,9,10,11,12).grid(row=13, column=2)
-yearstartTb = OptionMenu(root, VyearStart,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,
-                     2026,2027,2028,2029,2030,2031,2032,2033,2034,2035,2036,2037,2038,2039,2040,
-                     2041,2042,2043,2044,2045,2046,2047,2048,2049,2050).grid(row=13, column=3)
+    introMessage1 = Label(root,text="Welcome!", font="Arial 26").grid(row=6, column=1, columnspan=3)
+    introMessage2 = Label(root,text="To create a fixture list, follow the instructions below").grid(row=7, column=1, columnspan=3)
+    blank2 = Label(root,text="").grid(row=8, column=1, columnspan=3)
 
-endLabel = Label(root,text="END DATE").grid(row=14, column=1, columnspan=3)
-dayendLabel = Label(root, text= "Enter end day: ").grid(row=15, column=1)
-monthendLabel = Label(root, text= "Enter end month:").grid(row=15, column=2)
-yearendLabel = Label(root, text="Enter end year:").grid(row=15, column=3)
-dayendTb = OptionMenu(root, VdayEnd,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,
-                    16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31).grid(row=16, column=1)
-monthendTb = OptionMenu(root, VmonthEnd,1,2,3,4,5,6,7,8,9,10,11,12).grid(row=16, column=2)
-yearendTb = OptionMenu(root, VyearEnd,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,
-                     2026,2027,2028,2029,2030,2031,2032,2033,2034,2035,2036,2037,2038,2039,2040,
-                     2041,2042,2043,2044,2045,2046,2047,2048,2049,2050).grid(row=16, column=3)
-blank3 = Label(root,text="").grid(row=17, column=1)
+    dateHeader = Label(root, text="Start & End Dates", font="Arial 18 bold").grid(row=9, column=1, columnspan=3)
+    partMessage = Label(root,text="Please enter fill in all the fields below").grid(row=10, column=1, columnspan=3)
 
-userfilenameHeader = Label(root, text="New File Name", font="Arial 18 bold").grid(row=18, column=1, columnspan=3)
-userfilenameLabel = Label(root, text="Enter the file name of your fixture list").grid(row=19, column=1, columnspan=2)
-userfilenameTb = Entry(root, textvariable=VuserfileName, justify="left").grid(row=19, column=3)
-blank4 = Label(root, text="").grid(row=20, column=1)
+    startLabel = Label(root,text="START DATE").grid(row=11, column=1, columnspan=3)
+    daystartLabel = Label(root, text= "Enter start day: ").grid(row=12, column=1)
+    monthstartLabel = Label(root, text= "Enter start month:").grid(row=12, column=2)
+    yearstartLabel = Label(root, text="Enter start year:").grid(row=12, column=3)
+    daystartTb = OptionMenu(root,VdayStart,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,
+                        16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31).grid(row=13, column=1)
+    monthstartTb = OptionMenu(root, VmonthStart,1,2,3,4,5,6,7,8,9,10,11,12).grid(row=13, column=2)
+    yearstartTb = OptionMenu(root, VyearStart,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,
+                         2026,2027,2028,2029,2030,2031,2032,2033,2034,2035,2036,2037,2038,2039,2040,
+                         2041,2042,2043,2044,2045,2046,2047,2048,2049,2050).grid(row=13, column=3)
 
-button2Header = Label(root,text="Click next to import spreadsheet", font="Arial 18 bold").grid(row=21, column=1, columnspan=3)
-button2 = Button(root, text ="Next", command=assigndatestomatches).grid(row=22, column=1, columnspan=3)
+    endLabel = Label(root,text="END DATE").grid(row=14, column=1, columnspan=3)
+    dayendLabel = Label(root, text= "Enter end day: ").grid(row=15, column=1)
+    monthendLabel = Label(root, text= "Enter end month:").grid(row=15, column=2)
+    yearendLabel = Label(root, text="Enter end year:").grid(row=15, column=3)
+    dayendTb = OptionMenu(root, VdayEnd,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,
+                        16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31).grid(row=16, column=1)
+    monthendTb = OptionMenu(root, VmonthEnd,1,2,3,4,5,6,7,8,9,10,11,12).grid(row=16, column=2)
+    yearendTb = OptionMenu(root, VyearEnd,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,
+                         2026,2027,2028,2029,2030,2031,2032,2033,2034,2035,2036,2037,2038,2039,2040,
+                         2041,2042,2043,2044,2045,2046,2047,2048,2049,2050).grid(row=16, column=3)
+    blank3 = Label(root,text="").grid(row=17, column=1)
 
-root.mainloop()
+    userfilenameHeader = Label(root, text="New File Name", font="Arial 18 bold").grid(row=18, column=1, columnspan=3)
+    userfilenameLabel = Label(root, text="Enter the file name of your fixture list").grid(row=19, column=1, columnspan=2)
+    userfilenameTb = Entry(root, textvariable=VuserfileName, justify="left").grid(row=19, column=3)
+    blank4 = Label(root, text="").grid(row=20, column=1)
+
+    button2Header = Label(root,text="Click next to import spreadsheet", font="Arial 18 bold").grid(row=21, column=1, columnspan=3)
+    button2 = Button(root, text ="Next", command=assigndatestomatches).grid(row=22, column=1, columnspan=3)
+
+    root.mainloop()
