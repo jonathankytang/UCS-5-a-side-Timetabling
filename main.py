@@ -6,7 +6,6 @@
 
 import itertools
 import datetime
-# from datetime import date, timedelta as td
 import queue as Q
 from operator import itemgetter
 from itertools import cycle
@@ -110,15 +109,15 @@ def assigndatestomatches():
             matchList[counter1] = list3
 
         #assigning match numbers to gs matches
-        groupCode = ["LS","MS","US","MX"]
-        groupCount = [12,12,24,6]
+        groupCode = ["LS", "MS", "US", "MX"]
+        groupCount = [12, 12, 24, 6]
 
         match = 0
         for group in range(4):
             for count in range(groupCount[group]):
                 matchCode = groupCode[group] + str(count+1)
                 matchList[match].append(matchCode)
-                match+=1
+                match += 1
 
         #assigning dates
         startDate = datetime.date(yearStart, monthStart, dayStart)
@@ -140,7 +139,7 @@ def assigndatestomatches():
 
         koStartDate = gsEndDate + datetime.timedelta(days=(8-gsEndDate.isoweekday()))
 
-        delta = endDate-startDate
+        delta = endDate - startDate
 
         gsdelta = gsEndDate - startDate
 
@@ -149,12 +148,11 @@ def assigndatestomatches():
         for i in range(gsdelta.days+1):
             newDate = startDate + datetime.timedelta(days=i)
             if newDate.isoweekday()<6:
-                datesList+=[[newDate.year, newDate.month, newDate.day, newDate.isoweekday(),[0,0,0,0,0,0,0,0],[0,0,0,0]]]
+                datesList += [[newDate.year, newDate.month, newDate.day, newDate.isoweekday(),[0,0,0,0,0,0,0,0],[0,0,0,0]]]
 
         #priorities for each year group
         priorityGS = []
 
-        yearGroupCodes = ["E", "S", "L", "R", "U", "T", "6", "M"]
         priorityVals = {
             "E": [3,5,2],
             "S": [5,4,1,2],
@@ -212,7 +210,7 @@ def assigndatestomatches():
         #assigns each GS match a pitch
         matchCounter = 0
         for counter in range(len(matchList)):
-            if matchCounter%2 == 0:
+            if matchCounter % 2 == 0:
                 matchList[matchCounter].append("Centre")
                 matchCounter += 1
             else:
@@ -249,10 +247,10 @@ def assigndatestomatches():
         priorityKO = []
 
         priorityKOnums = {
-            "LS": [5,2,2],
-            "MS": [3,5,1],
-            "US": [4,2,2],
-            "MX": [4,2,2]
+            "LS": [5, 2, 2],
+            "MS": [3, 5, 1],
+            "US": [4, 2, 2],
+            "MX": [4, 2, 2]
         }
 
         for key, value in priorityKOnums.items():
@@ -261,7 +259,6 @@ def assigndatestomatches():
 
         #data dictionary
         compNum = {"LS": 0, "MS": 1, "US": 2, "MX": 3}
-        # compCodes = ["LS", "MS", "US", "MX"]
 
         #adds all the KO fixtures to matchList
         komatchList = []
@@ -304,7 +301,7 @@ def assigndatestomatches():
                 if match[0][10:15] == "match":
                     pre1 = match[0][16:20]
                     matchCounter = 0
-                    preFound= False
+                    preFound = False
                     while preFound == False:
                         if komatchList[matchCounter][2] == pre1:
                             date1 = komatchList[matchCounter][3][:3]
@@ -335,7 +332,7 @@ def assigndatestomatches():
                     else:
                         counter += 1
                 if dateFound == False:
-                    if priNum<3:
+                    if priNum < 3:
                         priNum += 1
                     else:
                         enoughDates = False
@@ -353,9 +350,9 @@ def assigndatestomatches():
         komatchList = sorted(komatchList, key=itemgetter(3))
 
         #assigning pitches and session times to KO matches
-        prevDate=[]
+        prevDate = []
         for match in komatchList:
-            if match[3]!= prevDate:
+            if match[3] != prevDate:
                 pitch = 1
             else:
                 pitch += 1
@@ -373,7 +370,7 @@ def assigndatestomatches():
         importSpreadsheet = filedialog.askopenfilename(initialdir="C:/Users/%s" % user)
 
         #retreives data from spreadsheet and assigns team names to team codes
-        while importSpreadsheet[-4:]==".csv":
+        while importSpreadsheet[-4:] == ".csv":
             with open(importSpreadsheet) as csvfile:
                 readCSV = csv.reader(csvfile, delimiter=",")
 
@@ -387,31 +384,31 @@ def assigndatestomatches():
                 importedM = []
 
                 for row in readCSV:
-                    if row[3]=="Lower School (Entry, Shell)":
-                        if row[4]=="Entry":
+                    if row[3] == "Lower School (Entry, Shell)":
+                        if row[4] == "Entry":
                             importedE.append(row[5])
 
-                        if row[4]=="Shell":
+                        if row[4] == "Shell":
                             importedS.append(row[5])
 
-                    if row[3]=="Middle School (Lower Remove, Remove)":
-                        if row[4]=="Lower Remove":
+                    if row[3] == "Middle School (Lower Remove, Remove)":
+                        if row[4] == "Lower Remove":
                             importedL.append(row[5])
 
-                        if row[4]=="Remove":
+                        if row[4] == "Remove":
                             importedR.append(row[5])
 
-                    if row[3]=="Upper School (Upper Remove, Transitus, Sixth, BOYS only)":
-                        if row[4]=="Upper Remove":
+                    if row[3] == "Upper School (Upper Remove, Transitus, Sixth, BOYS only)":
+                        if row[4] == "Upper Remove":
                             importedU.append(row[5])
 
-                        if row[4]=="Transitus":
+                        if row[4] == "Transitus":
                             importedT.append(row[5])
 
-                        if row[4]=="Sixth":
+                        if row[4] == "Sixth":
                             imported6.append(row[5])
 
-                    if row[3]=="Mixed (Transitus, Sixth, Boys AND Girls)":
+                    if row[3] == "Mixed (Transitus, Sixth, Boys AND Girls)":
                         importedM.append(row[5])
 
                 #randomises teams in each group
@@ -432,7 +429,6 @@ def assigndatestomatches():
                 month = matchList[counter][3][1]
                 day = matchList[counter][3][2]
                 date = str(year) +"/"+str(month)+"/"+str(day)
-                # from datetime import datetime
                 date_object = datetime.datetime.strptime(date, "%Y/%m/%d")
                 convertedDate = date_object.strftime("%a-%d-%b")
                 weekday = matchList[counter][3][3]
@@ -441,46 +437,46 @@ def assigndatestomatches():
                 team2 = matchList[counter][1]
 
                 #assigning pitches and sessions to komatches
-                if len(team1)==2:
+                if len(team1) == 2:
 
                     yr = team1[0]
                     nm = int(team1[1])
 
-                    if yr=="E":
+                    if yr == "E":
                         team1 = importedE[nm-1]
-                    elif yr=="S":
+                    elif yr == "S":
                         team1 = importedS[nm-1]
-                    elif yr=="L":
+                    elif yr == "L":
                         team1 = importedL[nm-1]
-                    elif yr=="R":
+                    elif yr == "R":
                         team1 = importedR[nm-1]
-                    elif yr=="U":
+                    elif yr == "U":
                         team1 = importedU[nm-1]
-                    elif yr=="T":
+                    elif yr == "T":
                         team1 = importedT[nm-1]
-                    elif yr=="6":
+                    elif yr == "6":
                         team1 = imported6[nm-1]
-                    elif yr=="M":
+                    elif yr == "M":
                         team1 = importedM[nm-1]
 
                     yr = team2[0]
                     nm = int(team2[1])
 
-                    if yr=="E":
+                    if yr == "E":
                         team2 = importedE[nm-1]
-                    elif yr=="S":
+                    elif yr == "S":
                         team2 = importedS[nm-1]
-                    elif yr=="L":
+                    elif yr == "L":
                         team2 = importedL[nm-1]
-                    elif yr=="R":
+                    elif yr == "R":
                         team2 = importedR[nm-1]
-                    elif yr=="U":
+                    elif yr == "U":
                         team2 = importedU[nm-1]
-                    elif yr=="T":
+                    elif yr == "T":
                         team2 = importedT[nm-1]
-                    elif yr=="6":
+                    elif yr == "6":
                         team2 = imported6[nm-1]
-                    elif yr=="M":
+                    elif yr == "M":
                         team2 = importedM[nm-1]
 
                 session = matchList[counter][5]
@@ -565,8 +561,6 @@ if __name__ == '__main__':
     VmonthEnd.set(2)
     VyearEnd.set(2017)
     VuserfileName.set("test.csv")
-
-    # assigndatestomatches()
 
     button1 = Button(root, text="Quit Program", command=quitProgram).grid(row=1, column=3)
 
